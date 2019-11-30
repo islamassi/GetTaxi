@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Taxi App</string>
+
+    <string name="google_maps_key">AIzaSyAqEN72bk1QtGU4T2NLMZyV1F2CxCWO6FM</string>
+
+    <string name="location_permission_denied">Go to settings and enable location services for a better experience</string>
+
+    <string name="server_error">Oops, server error</string>
+
+    <string name="settings">Settings</string>
+
+    <string name="east">East</string>
+    <string name="northeast">Northeast</string>
+    <string name="north">North</string>
+    <string name="northwest">Northwest</string>
+    <string name="west">west</string>
+    <string name="southwest">Southwest</string>
+    <string name="south">South</string>
+    <string name="southeast">Southeast</string>
+
+    <string name="heading">Heading</string>
+    <string name="duration_sort">Duration sort</string>
+    <string name="distance_sort">Distance sort</string>
+
+</resources>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.assi.islam.mytaxi.viewModel.RideOptionCardViewModel"/>
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/card_view"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        app:cardCornerRadius="6dp"
+        android:layout_marginBottom="8dp"
+        app:cardUseCompatPadding="false">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="#B3213B69">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageContainer"
+                android:layout_alignParentTop="true">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:id="@+id/poolShare"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/ic_group"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_margin="8dp"
+                    android:alpha="0.8"
+                    android:visibility="@{viewModel.poolVisibility}"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="105dp"
+                    android:layout_height="67dp"
+                    android:id="@+id/cover_image"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/taxi_image"
+                    android:layout_toLeftOf="@+id/poolShare"
+                    android:layout_centerVertical="true"
+                    android:alpha="0.8"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="2dp" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp">
+
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:id="@+id/durationImage"
+                        app:srcCompat="@drawable/ic_timer"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:padding="3dp"
+                        android:layout_margin="5dp"
+                        android:visibility="@{viewModel.durationVisibility}"
+                        android:background="@drawable/circle_shape"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/durationTextView"
+                        android:layout_toRightOf="@+id/durationImage"
+                        android:layout_alignTop="@id/durationImage"
+                        android:layout_alignBottom="@id/durationImage"
+                        style="@style/TagTextView"
+                        android:text="@{viewModel.durationText}"
+                        android:visibility="@{viewModel.durationVisibility}"/>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:id="@+id/distanceImage"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/durationImage"
+                        android:layout_margin="5dp"
+                        app:srcCompat="@drawable/ic_near_me"
+                        android:padding="4dp"
+                        android:visibility="@{viewModel.distanceVisibility}"
+                        android:background="@drawable/circle_shape"/>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/distanceTextView"
+                        android:layout_toRightOf="@+id/distanceImage"
+                        android:layout_alignTop="@id/distanceImage"
+                        android:layout_alignBottom="@id/distanceImage"
+                        style="@style/TagTextView"
+                        android:text="@{viewModel.distanceText}"
+                        android:visibility="@{viewModel.distanceVisibility}"
+                        />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:id="@+id/headingImage"
+                        app:srcCompat="@drawable/ic_arrow_forward"
+                        android:padding="3dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/distanceImage"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/circle_shape"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/headingTextView"
+                        android:layout_toRightOf="@+id/headingImage"
+                        android:layout_alignTop="@id/headingImage"
+                        android:layout_alignBottom="@id/headingImage"
+                        style="@style/TagTextView"
+                        android:text="@{viewModel.headingText}"/>
+
+                </RelativeLayout>
+            </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/addressTextView"
+                android:maxLines="1"
+                android:layout_below="@+id/imageContainer"
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                android:text="@{viewModel.addressText}"
+                android:visibility="@{viewModel.addressVisibility}"
+                android:gravity="left"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/copyRightsText"
+                android:maxLines="1"
+                android:layout_below="@id/addressTextView"
+                android:textSize="7sp"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/silver"
+                android:text="@{viewModel.copyRightText}"
+                android:visibility="@{viewModel.copyRightVisibility}"
+                android:gravity="left"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="3dp"/>
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>
