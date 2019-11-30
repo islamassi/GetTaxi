@@ -9,7 +9,7 @@
 * **VehiclesMapFragment** which shows the requested vehicles in the map.
 * The vehicle card shows the **time** and **distance** that is needed by th car to arrive the user. It is also showing where the vehicle is **heading**, its **address**, and an indication weather if it is a **pooling** vehicle.
 <p align="center">
-  <img src="?raw=true" width="200" >
+  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/4.jpg?raw=true" width="200" >
 </p>
 * I get the list of vehicles by a GET call to:
 https://fake-poi-api.mytaxi.com/?p1Lat={Latitude1}&p1Lon={Longitude1}&p2Lat={Latitude2}&p2Lon={Longit ude2}
@@ -58,7 +58,12 @@ https://developer.android.com/jetpack/docs/guide#best-practices
 ## Screenshots
 
 <p align="center">
-  <img src="?raw=true" width="350" >
+  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/1.jpg?raw=true" width="350" >
+  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/3.jpg?raw=true" width="350" >
+  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/5.jpg?raw=true" width="350" >
+  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/6.jpg?raw=true" width="350" >
+  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/7.jpg?raw=true" width="350" >
+  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/2.jpg?raw=true" width="350" >
 </p>
 
 ### Feedback
