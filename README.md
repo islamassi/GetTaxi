@@ -60,6 +60,9 @@ https://developer.android.com/jetpack/docs/guide#best-practices
 
 ![alt text](https://developer.android.com/topic/libraries/architecture/images/final-architecture.png)
 
+## Demo Video
+https://drive.google.com/file/d/1FwK03E0LSITdNYOK4xnfvjoxX-7tdz5U/view?usp=sharing
+
 ## Screenshots
 
 <p align="center">
