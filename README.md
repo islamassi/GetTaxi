@@ -1,7 +1,7 @@
 
 # Taxi!
 
-### App description:
+###   App description:
 * This app consists of two main fragments (screens). **VehicleListFragment** and **VehiclesMapFragment**.
 
 **Please allow location permission so all features in the app will operate**
@@ -17,7 +17,7 @@ https://fake-poi-api.mytaxi.com/?p1Lat={Latitude1}&p1Lon={Longitude1}&p2Lat={Lat
 * Clicking on a vehicle in **VehiclesMapFragment** will show the vehicle card and the path between it and the user.
 * in **VehicleListFragment**, the user have the ability to sort the list by duration or distance.
 
-### Technical notes:
+###   Technical notes:
 * I used MVVM architecture using Android Architecture components and Android Jetpack including **ViewModel*** and **LiveData**.
 * RxJava is being used to iterate through all the vehicles and request Google Directions API to get info regarding, time, distance, and path between user's location and the vehicle.
 * The user don't have to wait for all these requests to finish. Each successful request will be directly shown in the vehicles list.
