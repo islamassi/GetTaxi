@@ -1,6 +1,10 @@
 
 # Taxi!
 
+<p align="center">
+  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/1.jpg?raw=true" width="350" >
+</p>
+
 **Please allow location permission so all features in the app will operate**
 
 ###   App description:
