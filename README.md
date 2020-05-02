@@ -61,6 +61,9 @@ https://developer.android.com/jetpack/docs/guide#best-practices
 
 ![alt text](https://developer.android.com/topic/libraries/architecture/images/final-architecture.png)
 
+## Build/Run the app
+To run the app successfully, you need to add Google Maps API key to the strings.xml file
+
 ## Demo Video
 https://drive.google.com/file/d/1FwK03E0LSITdNYOK4xnfvjoxX-7tdz5U/view?usp=sharing
 
