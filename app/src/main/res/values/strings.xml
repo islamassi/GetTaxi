@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Taxi App</string>
 
-    <string name="google_maps_key">AIzaSyAqEN72bk1QtGU4T2NLMZyV1F2CxCWO6FM</string>
+    <!--TODO("add Google Maps API key here")-->
+    <string name="google_maps_key">ADD KEY HERE</string>
 
     <string name="location_permission_denied">Go to settings and enable location services for a better experience</string>
 
