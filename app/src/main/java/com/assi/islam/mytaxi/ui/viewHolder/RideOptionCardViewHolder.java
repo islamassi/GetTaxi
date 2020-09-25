@@ -38,9 +38,12 @@ public class RideOptionCardViewHolder extends RecyclerView.ViewHolder implements
 
     public void bind(RideOptionHolderViewModel viewModel){
         this.mViewModel = viewModel;
+        mBinding.unbind();
         mBinding.setViewModel(mViewModel);
         if (LocationUpdateManager.getInstance().isPermissionGranted())
             mBinding.card.animateCard();
+        else
+            mBinding.card.animateCarX();
     }
 
     public Context getContext() {

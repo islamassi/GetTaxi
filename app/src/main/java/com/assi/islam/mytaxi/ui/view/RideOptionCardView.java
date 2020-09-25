@@ -106,10 +106,16 @@ public class RideOptionCardView extends FrameLayout {
         set.start();
     }
 
+    public void animateCarX(){
+        float itemXAnim = dpToPx(mContext, 20);
+        ObjectAnimator
+                .ofFloat(mBinding.coverImage, "translationX",  itemXAnim)
+                .setDuration(animDuration*2).start();
+    }
     private AnimatorSet getCarAnimation(float x, float y){
-        ObjectAnimator carXAnim = ObjectAnimator.ofFloat(mBinding.coverImage, "translationX",  80f)
+        ObjectAnimator carXAnim = ObjectAnimator.ofFloat(mBinding.coverImage, "translationX",  x)
                 .setDuration(animDuration*2);
-        ObjectAnimator carYAnim = ObjectAnimator.ofFloat(mBinding.coverImage, "translationY",  80f)
+        ObjectAnimator carYAnim = ObjectAnimator.ofFloat(mBinding.coverImage, "translationY",  y)
                 .setDuration(animDuration*2);
         carYAnim.setInterpolator(new AccelerateDecelerateInterpolator());
         carXAnim.setInterpolator(new AccelerateDecelerateInterpolator());
