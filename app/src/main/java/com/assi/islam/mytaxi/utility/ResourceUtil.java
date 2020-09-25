@@ -1,11 +1,15 @@
 package com.assi.islam.mytaxi.utility;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.util.TypedValue;
 
 import com.assi.islam.mytaxi.MyTaxiApplication;
 import com.assi.islam.mytaxi.R;
 
+import androidx.annotation.Dimension;
 import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 /**
@@ -41,5 +45,10 @@ public class ResourceUtil {
             headingText =  bindString(R.string.southeast);
         }
         return bindString(R.string.heading)+ " " + headingText;
+    }
+
+    public static float dpToPx(@NonNull Context context, @Dimension(unit = Dimension.DP) int dp) {
+        Resources r = context.getResources();
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
     }
 }

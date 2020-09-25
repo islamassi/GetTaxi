@@ -1,5 +1,7 @@
 package com.assi.islam.mytaxi.ui.view;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -10,6 +12,7 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -22,6 +25,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
+import static com.assi.islam.mytaxi.utility.ResourceUtil.dpToPx;
+
 /**
  * Created by islam assi
  *
@@ -32,6 +37,8 @@ public class RideOptionCardView extends FrameLayout {
     private Context mContext;
     private RideOptionCardLayoutBinding mBinding;
     private RideOptionCardViewModel mViewModel;
+    private AnimatorSet set = new AnimatorSet();
+    private int animDuration = 500;
 
     public RideOptionCardView(Context context) {
         super(context);
@@ -72,5 +79,42 @@ public class RideOptionCardView extends FrameLayout {
         this.mViewModel = mViewModel;
         mBinding.headingImage.setRotation((float) mViewModel.getRideOption().getVehicle().getHeading() *-1);
         mBinding.setViewModel(mViewModel);
+    }
+
+    public void animateCard() {
+        set.end();
+        float itemX = dpToPx(mContext, 20);
+        float cardX = dpToPx(mContext, 70);
+
+        ObjectAnimator cardAnim = ObjectAnimator.ofFloat(mBinding.getRoot(), "translationX", -cardX, 0f)
+                .setDuration(animDuration);
+        ObjectAnimator timeAnim = ObjectAnimator.ofFloat(mBinding.durationTextView, "translationX", itemX, 0f)
+                .setDuration(animDuration);
+        ObjectAnimator distanceAnim = ObjectAnimator.ofFloat(mBinding.distanceTextView, "translationX", itemX, 0f)
+                .setDuration(animDuration);
+        ObjectAnimator headingAnim = ObjectAnimator.ofFloat(mBinding.headingTextView, "translationX", itemX, 0f)
+                .setDuration(animDuration);
+        ObjectAnimator carX2Anim = ObjectAnimator.ofFloat(mBinding.coverImage, "translationX",  cardX,0f)
+                .setDuration(animDuration);
+
+        mBinding.coverImage.setAlpha(0.1f);
+        mBinding.coverImage.animate().alpha(0.75f).setDuration(animDuration*4).start();
+
+        set = new AnimatorSet();
+        set.play(cardAnim).with(timeAnim).with(distanceAnim).with(headingAnim).with(carX2Anim)
+                .before(getCarAnimation(itemX, itemX));
+        set.start();
+    }
+
+    private AnimatorSet getCarAnimation(float x, float y){
+        ObjectAnimator carXAnim = ObjectAnimator.ofFloat(mBinding.coverImage, "translationX",  80f)
+                .setDuration(animDuration*2);
+        ObjectAnimator carYAnim = ObjectAnimator.ofFloat(mBinding.coverImage, "translationY",  80f)
+                .setDuration(animDuration*2);
+        carYAnim.setInterpolator(new AccelerateDecelerateInterpolator());
+        carXAnim.setInterpolator(new AccelerateDecelerateInterpolator());
+        AnimatorSet carAnim = new AnimatorSet();
+        carAnim.playTogether(carXAnim,carYAnim);
+        return carAnim;
     }
 }
