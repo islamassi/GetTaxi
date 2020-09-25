@@ -1,14 +1,25 @@
 
 # Taxi!
 
+- [Taxi!](#taxi-)
+    + [**   IMPORTANT**](#-----important--)
+    + [APK](#apk)
+    + [Demo Video](#demo-video)
+    + [App description:](#app-description-)
+    + [Technical notes:](#technical-notes-)
+    + [Some of the used SDKs:](#some-of-the-used-sdks-)
+    + [Architecture](#architecture)
+  * [Build/Run the app](#build-run-the-app)
+  * [Screenshots](#screenshots)
+    
 <p align="center">
   <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/1.jpg?raw=true" width="350" >
   <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/2.jpg?raw=true" width="350" >
 </p>
 
-**Please allow location permission so all features in the app will operate correctly**
 
-### **   IMPORTANT**
+#### **IMPORTANT**
+* **Please allow location permission so all features in the app will operate correctly**
 * The app was built in April 2019
 * The app should have been built in **Kotlin**. 
 * If you would like to check a Kotlin project, please navigate to <a href="https://github.com/islamassi/IA_NewsApp">**IA_News**</a>
