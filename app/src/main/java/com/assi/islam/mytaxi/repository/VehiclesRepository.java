@@ -104,9 +104,7 @@ public class VehiclesRepository {
             }
         };
 
-        Consumer<Throwable> prepareRideOptinOnError = throwable -> {
-            throwable.toString();
-        };
+        Consumer<Throwable> prepareRideOptinOnError = throwable -> { };
 
         Action rideOptionListComplete = () -> {
             rideOptionsResourceLiveData.setValue(Resource.success(rideOptionList));
