@@ -13,8 +13,8 @@
   * [Screenshots](#screenshots)
     
 <p align="center">
-  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/1.jpg?raw=true" width="350" >
-  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/2.jpg?raw=true" width="350" >
+  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/8.jpg?raw=true" width="350" >
+  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/9.jpg?raw=true" width="350" >
 </p>
 
 
@@ -36,7 +36,7 @@
 * **VehiclesMapFragment** which shows the requested vehicles in the map.
 * The vehicle card shows the **time** and **distance** that is needed by th car to arrive the user. It is also showing where the vehicle is **heading**, its **address**, and an indication weather if it is a **pooling** vehicle.
 <p align="center">
-  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/4.jpg?raw=true" width="350" >
+  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/10.jpg?raw=true" width="350" >
 </p>
 
 * I get the list of vehicles by a GET call to:
@@ -81,12 +81,12 @@ To run the app successfully, you need to add Google Maps API key to the strings.
 ## Screenshots
 
 <p align="center">
-  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/1.jpg?raw=true" width="350" >
-  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/2.jpg?raw=true" width="350" >
+  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/8.jpg?raw=true" width="350" >
+  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/9.jpg?raw=true" width="350" >
   <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/5.jpg?raw=true" width="350" >
   <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/6.jpg?raw=true" width="350" >
   <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/7.jpg?raw=true" width="350" >
-  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/2.jpg?raw=true" width="350" >
+  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/8.jpg?raw=true" width="350" >
 </p>
 
 ### Feedback
