@@ -24,7 +24,6 @@ import retrofit2.Response;
 
 @Singleton
 public class DirectionsApiRepository {
-
     private final GoogleApiWebservice googleApiWebservice;
 
     @Inject
@@ -33,7 +32,6 @@ public class DirectionsApiRepository {
     }
 
     public Observable<Response<DistanceResponse>> getDistanceMatrix(LatLng origin, LatLng destination){
-
         return googleApiWebservice.getDistanceMatrix(
                 toUrlValue(origin),
                 toUrlValue(destination),
@@ -42,7 +40,6 @@ public class DirectionsApiRepository {
     }
 
     public Observable<Response<Directions>> getDirections(LatLng origin, LatLng destination){
-
         return googleApiWebservice.getDirections(
                 toUrlValue(origin),
                 toUrlValue(destination),

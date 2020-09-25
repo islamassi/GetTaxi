@@ -64,27 +64,17 @@ public class VehiclesMapFragment extends Fragment implements
 {
 
     private static final String TAG = VehiclesMapFragment.class.getSimpleName();
-
     private VehiclesMapViewModel mViewModel;
-
     private VehiclesSharedViewModel mSharedViewModel;
-
     private GoogleMap mMap;
-
     @Inject
     ViewModelFactory mViewModelFactory;
-
     private VehiclesMapFragmentBinding mBinding;
-
     private int cameraMoveReason = -1;
-
     // keeps a reference to the added markers
     private ArrayList<Marker> rideOptionMarkeres = new ArrayList<>();
-
     private final int MAP_PADDING = 90;
-
     private boolean isMapBoundRequest = false;
-
     public static VehiclesMapFragment newInstance() {
         return new VehiclesMapFragment();
     }
@@ -92,119 +82,78 @@ public class VehiclesMapFragment extends Fragment implements
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         mBinding = DataBindingUtil.inflate(inflater, R.layout.vehicles_map_fragment, container, false);
-
         DaggerAppComponent.create().inject(this);
-
         mBinding.setLifecycleOwner(this);
-
         return mBinding.getRoot();
-
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         initViewModel();
-
         FragmentManager fm = getChildFragmentManager();
-
         SupportMapFragment mapFragment = (SupportMapFragment) fm.findFragmentByTag("mapFragment");
-
         if (mapFragment == null) {
-
             mapFragment = new SupportMapFragment();
-
             FragmentTransaction ft = fm.beginTransaction();
             ft.add(R.id.map_fragment_container, mapFragment, "mapFragment");
             ft.commit();
             fm.executePendingTransactions();
         }
-
         mapFragment.getMapAsync(this);
-
     }
 
     private void initViewModel(){
-
         // fragment scope
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(VehiclesMapViewModel.class);
-
         // activity scope
         mSharedViewModel = ViewModelProviders.of(getActivity(), mViewModelFactory).get(VehiclesSharedViewModel.class);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         mMap = googleMap;
-
         mSharedViewModel.getRideOptionListResourceLiveData().observe(this, this);
-
         mSharedViewModel.getSelectedRideOptionLiveData().observe(this, this::selectRideOption);
-
         mViewModel.getPolyPointsLiveData().observe(this, processedPolyPointsObserver);
-
         initMap();
-
         mBinding.setViewModel(mViewModel);
-
         initWithRideOption();
     }
 
     private void initMap() {
-
         if (LocationUpdateManager.getInstance().isPermissionGranted()) {
-
             mMap.setMyLocationEnabled(true);
-
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
-
             mMap.getUiSettings().setAllGesturesEnabled(true);
-
         }else{
-
             // Trying one more time to get Location updates in case user denied in the previous screen
             LocationUpdateManager.getInstance().startLocationService();
         }
-
         mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(mSharedViewModel.getHamburgBounds(), 0));
-
         registerMapEventListeners();
     }
 
     private void initWithRideOption(){
-
         RideOption selectedRideOption = mSharedViewModel.getSelectedRideOptionLiveData().getValue();
-
         if (selectedRideOption != null) {
-
             if (selectedRideOption.getDirections() == null) {
-
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                         selectedRideOption.getVehicle().getCoordinate().toLatLng(),
                         10)
                 );
-
             } else {
-
                 drawPolyLine(selectedRideOption.getDirections());
             }
         }
     }
 
     private void registerMapEventListeners() {
-
         mMap.setOnMyLocationButtonClickListener(this);
-
         mMap.setOnMyLocationClickListener(this);
-
         mMap.setOnCameraIdleListener(this);
-
         mMap.setOnCameraMoveStartedListener(this);
-
         mMap.setOnMarkerClickListener(this);
     }
 
@@ -213,9 +162,7 @@ public class VehiclesMapFragment extends Fragment implements
      * @param rideOption
      */
     private void addMarker(RideOption rideOption) {
-
         Vehicle vehicle = rideOption.getVehicle();
-
         Marker marker = mMap.addMarker(
                 new MarkerOptions()
                         .position(vehicle
@@ -225,9 +172,7 @@ public class VehiclesMapFragment extends Fragment implements
                         .flat(true)
                         .rotation((float) (vehicle.getHeading()*-1) +90)
         );
-
         marker.setTag(rideOption);
-
         rideOptionMarkeres.add(marker);
     }
 
@@ -235,25 +180,21 @@ public class VehiclesMapFragment extends Fragment implements
      * clear markers
      */
     private void clearRideOptionMarkers() {
-
         for (Marker marker: rideOptionMarkeres) marker.remove();
     }
 
     private void addRideOptionMarkers(List<RideOption> rideOptionList) {
-
         for (RideOption rideOption: rideOptionList) addMarker(rideOption);
     }
 
     @Override
     public void onCameraMoveStarted(int reason) {
-
         // track the reason behind camera move
         cameraMoveReason = reason;
     }
 
     @Override
     public void onCameraIdle() {
-
         if (cameraMoveReason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE) {
             requestRideOptionList();
         }
@@ -261,33 +202,23 @@ public class VehiclesMapFragment extends Fragment implements
 
     @Override
     public void onMyLocationClick(@NonNull Location location) {
-
         requestRideOptionList();
     }
 
-
     @Override
     public boolean onMyLocationButtonClick() {
-
         requestRideOptionList();
-
         return false;
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-
         if (marker.getTag()!= null && marker.getTag() instanceof RideOption) {
-
             RideOption rideOption = (RideOption) marker.getTag();
-
             mSharedViewModel.getSelectedRideOptionLiveData().setValue(rideOption);
-
             if (rideOption.getDirections()!= null) {
-
                 return true;
             }
-
         }
         return false;
     }
@@ -297,13 +228,9 @@ public class VehiclesMapFragment extends Fragment implements
      * @param rideOption
      */
     private void selectRideOption(RideOption rideOption) {
-
         mBinding.selectedRideOptionCard.setVisibility(View.VISIBLE);
-
         updateMapBottomPadding();
-
         mBinding.selectedRideOptionCard.setViewModel(new RideOptionCardViewModel(rideOption));
-
         drawPolyLine(rideOption.getDirections());
     }
 
@@ -311,11 +238,8 @@ public class VehiclesMapFragment extends Fragment implements
      * request list of {@link RideOption} in camera {@link LatLngBounds}
      */
     private void requestRideOptionList(){
-
         isMapBoundRequest = true;
-
         LatLngBounds latLngBounds = mMap.getProjection().getVisibleRegion().latLngBounds;
-
         mSharedViewModel.requestRideOptionsList(latLngBounds);
     }
 
@@ -325,19 +249,13 @@ public class VehiclesMapFragment extends Fragment implements
      * @param directions directions result that were retrived from Google Directions Api
      */
     private void drawPolyLine(Directions directions){
-
         removeLastPolyLine();
-
         if (directions == null || directions.getRoutes() == null )
             return;
-
         if (directions.getPathPoints() != null && !directions.getPathPoints().isEmpty()) {
-
             // polyLine points was previously processed and they are ready to be drawn
             processedPolyPointsObserver.onChanged(directions);
-
         }else{
-
             // parse {@link directions} to get poly points to draw and notify observer
             mViewModel.getPolyPoints(directions);
         }
@@ -347,7 +265,6 @@ public class VehiclesMapFragment extends Fragment implements
      * removes last drawn polyLine if exists
      */
     private void removeLastPolyLine() {
-
         if (mViewModel.getLastDrawnPolyline() != null)
             mViewModel.getLastDrawnPolyline().remove();
     }
@@ -367,33 +284,19 @@ public class VehiclesMapFragment extends Fragment implements
      */
     @Override
     public void onChanged(Resource<List<RideOption>, ApiError> resource) {
-
         if (resource.status == Resource.Status.SUCCESS || resource.status == Resource.Status.LOADING){
-
             handleNewList(resource.data);
-
             if (resource.isNewRequest) {
-
                 clearRideOptionMarkers();
-
                 removeLastPolyLine();
-
                 mBinding.selectedRideOptionCard.setVisibility(View.GONE);
-
                 mMap.setPadding(0,0,0,0);
-
                 if (!isMapBoundRequest){
-
                     mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(mSharedViewModel.getHamburgBounds(), 0));
-
                 }
-
                 isMapBoundRequest = false;
             }
-
-        }else if(resource.status == Resource.Status.ERROR){
-
-        }
+        }else if(resource.status == Resource.Status.ERROR){ }
     }
 
     /**
@@ -403,51 +306,34 @@ public class VehiclesMapFragment extends Fragment implements
      *
      */
     private void handleNewList(List<RideOption> newList) {
-
         List<RideOption> oldList = mViewModel.getRideOptionList();
-
         for (RideOption rideOption: newList){
-
             int index = oldList.indexOf(rideOption);
-
             if (index == -1){
-
                 addMarker(rideOption);
             }
         }
-
         mViewModel.setRideOptionList(new ArrayList<>(newList));
-
     }
 
     /**
      * get notified when finish processing polyLine points
      */
     private Observer<Directions> processedPolyPointsObserver = processedDirections -> {
-
         List<LatLng> path = processedDirections.getPathPoints();
-
         //Draw the polyline
         if (path.size() > 0) {
-
             removeLastPolyLine();
-
             PolylineOptions opts = new PolylineOptions().addAll(path).color(ContextCompat.getColor(getActivity(), R.color.orange)).width(7);
-
             mViewModel.setLastDrawnPolyline(mMap.addPolyline(opts));
-
             if (processedDirections.getRoutes().get(0).getBounds() != null && processedDirections.getRoutes().get(0).getBounds().toLatLngBounds() != null){
-
                 updateMapBottomPadding();
-
                 mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(processedDirections.getRoutes().get(0).getBounds().toLatLngBounds(), MAP_PADDING));
             }
         }
-
     };
 
     private void updateMapBottomPadding() {
-
         // more bottom padding because of the shown card
         mMap.setPadding(MAP_PADDING, MAP_PADDING, MAP_PADDING,  mBinding.selectedRideOptionCard.getHeight());
     }

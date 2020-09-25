@@ -22,81 +22,53 @@ import retrofit2.Retrofit;
 public abstract class ApiResponse<S,E extends ApiError> extends DisposableObserver<Response<S>> {
 
     private static final String TAG = ApiResponse.class.getSimpleName();
-
     private Class<E> errorClass;
-
     public ApiResponse(Class errorClass) {
         this.errorClass = errorClass;
     }
-
     public ApiResponse() { }
-
     protected abstract void onSuccess(S s);
-
     protected <D extends ApiError> void onFailure(D error) { }
 
     @Override
     public void onNext(Response<S> t) {
-
         onResponse(t);
     }
 
     private void onResponse(Response<S> responseModel) {
-
         if (responseModel.isSuccessful()) {
-
             onSuccess(responseModel.body());
-
         } else {
-
             ResponseBody errorBody = responseModel.errorBody();
-
             E parsedError = null;
-
             if(errorBody != null && errorClass != null) {
-
                 parsedError = parseError(responseModel, errorClass);
             }
-
             onFailure(parsedError != null? parsedError : new ApiError());
         }
 
         if (responseModel.errorBody() != null){
-
             responseModel.errorBody().close();
         }
-
     }
 
     @Override
     public void onError(Throwable e) {
-
         Log.e(TAG, "onError: ", e);
-
         E apiError = null;
-
         try {
             apiError = errorClass.newInstance();
-
             apiError.setThrowable(e);
-
             onFailure(apiError);
-
             return;
-
         } catch (Exception exception) {
-
             exception.printStackTrace();
         }
-
         onFailure(new ApiError());
     }
 
     @Override
-    public void onComplete() {
-
-    }
-
+    public void onComplete() { }
 
     /**
      * Try to parse error response to {@link E}
@@ -105,17 +77,13 @@ public abstract class ApiResponse<S,E extends ApiError> extends DisposableObserv
      * @return
      */
     public E parseError(Response<?> response, Class<E> apiErrorClass) {
-
         E error = null;
-
         Converter<ResponseBody, E> converter = new Retrofit.Builder().build().responseBodyConverter(apiErrorClass, new Annotation[0]);
         try {
             error = converter.convert(response.errorBody());
         } catch (IOException e) {
-
             Log.e(TAG, "Error parsing error response", e);
         }
-
         return error;
     }
 }

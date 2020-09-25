@@ -90,45 +90,33 @@ public class VehiclesRepository {
      * @param rideOptionsResourceLiveData for notifying a subscribed lifecycle owner
      */
     public void loadRideOptions(LatLngBounds bounds, Coordinate riderCoordinates, MutableLiveData<Resource<List<RideOption>, ApiError>> rideOptionsResourceLiveData){
-
         IdlingResourceManager.getInstance().getServicesIdlingResource().increment();
-
         dispose(lastRideOptionMapperDisposal, lastRideOptionDetailsDisposal);
-
         List<RideOption> rideOptionList = new ArrayList<>();
 
         Consumer<RideOption> prepareRideOptinOnSuccess = new Consumer<RideOption>() {
             boolean isNewRequest = true;
             @Override
             public void accept(RideOption rideOption) throws Exception {
-
                 rideOptionList.add(rideOption);
-
                 rideOptionsResourceLiveData.setValue(Resource.loading(rideOptionList, isNewRequest));
-
                 isNewRequest = false;
             }
         };
 
         Consumer<Throwable> prepareRideOptinOnError = throwable -> {
-
             throwable.toString();
         };
 
         Action rideOptionListComplete = () -> {
-
             rideOptionsResourceLiveData.setValue(Resource.success(rideOptionList));
-
             IdlingResourceManager.getInstance().getServicesIdlingResource().decrement();
-
         };
 
         ApiResponse<VehiclesListResponse, ApiError> vehiclesCallback = new ApiResponse<VehiclesListResponse, ApiError>() {
             @Override
             protected void onSuccess(VehiclesListResponse vehiclesListResponse) {
-
                 if (riderCoordinates != null) {
-
                     requestDetailedRideOptionList(
                             vehiclesListResponse.getVehicles(),
                             riderCoordinates,
@@ -138,7 +126,6 @@ public class VehiclesRepository {
                     );
 
                 }else{
-
                     mapVehicleListToRideOptionList(
                             vehiclesListResponse.getVehicles(),
                             prepareRideOptinOnSuccess,
@@ -150,13 +137,10 @@ public class VehiclesRepository {
             @Override
             protected <D extends ApiError> void onFailure(D error) {
                 super.onFailure(error);
-
                 rideOptionsResourceLiveData.setValue(Resource.error(error));
             }
         };
-
         loadVehicles(bounds, vehiclesCallback);
-
     }
 
     /**
@@ -165,7 +149,6 @@ public class VehiclesRepository {
      * Done in a worker thread
      */
     private void mapVehicleListToRideOptionList(List<Vehicle> vehicleList, Consumer<RideOption> onSuccess, Consumer<Throwable> onError, Action onComplete){
-
          lastRideOptionMapperDisposal = Observable.fromIterable(vehicleList)
                 .map(RideOption::new)
                 .subscribeOn(Schedulers.computation())
@@ -180,7 +163,6 @@ public class VehiclesRepository {
      * This s done in a worker thread
      */
     private void requestDetailedRideOptionList(List<Vehicle> vehicleList, Coordinate riderCoordinate,  Consumer<RideOption> onSuccess, Consumer<Throwable> onError, Action onComplete){
-
          lastRideOptionDetailsDisposal = Observable.fromIterable(vehicleList)
                 .flatMap((Function<Vehicle, ObservableSource<RideOption>>) vehicle -> requestRideOptionDetails(vehicle, riderCoordinate))
                 .subscribeOn(Schedulers.io())
@@ -192,11 +174,8 @@ public class VehiclesRepository {
      * dispose observers
      */
     private void dispose(Disposable... disposables){
-
         for (Disposable disposable: disposables) {
-
             if (disposable != null && !disposable.isDisposed()){
-
                 disposable.dispose();
             }
         }

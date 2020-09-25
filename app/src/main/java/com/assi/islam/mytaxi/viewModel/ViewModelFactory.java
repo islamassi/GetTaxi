@@ -23,11 +23,9 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         Provider<ViewModel> viewModelProvider = viewModels.get(modelClass);
-
         if (viewModelProvider == null) {
             throw new IllegalArgumentException("model class " + modelClass + " not found");
         }
-
         return (T) viewModelProvider.get();
     }
 }

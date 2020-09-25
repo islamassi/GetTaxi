@@ -17,11 +17,7 @@ import dagger.Component;
 @Singleton
 @Component(modules = {NetModule.class, ViewModelModule.class, GeoApiModule.class})
 public interface AppComponent {
-
     void inject(MainActivity activity);
-
     void inject(VehiclesMapFragment vehiclesMapFragment);
-
     void inject(VehicleListFragment vehicleListFragment);
-
 }

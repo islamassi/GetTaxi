@@ -34,38 +34,31 @@ public class NetModule {
     @Provides
     @Singleton
     Webservice provideWebService(Retrofit.Builder retrofitBuilder){
-
         return retrofitBuilder
                 .build()
                 .create(Webservice.class);
-
     }
 
     @Provides
     @Singleton
     GoogleApiWebservice provideGoogleApiWebService(Retrofit.Builder retrofitBuilder){
-
         return retrofitBuilder
                 .baseUrl(GOOGLE_API_BASE_URL)
                 .build()
                 .create(GoogleApiWebservice.class);
-
     }
 
     @Provides
     @Singleton
     Retrofit.Builder provideRetrofitBuilder(OkHttpClient okHttpClient){
-
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
-
         Retrofit.Builder defaultRetrofitBuilder =
                 new Retrofit.Builder()
                         .baseUrl(BASE_URL)
                         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                         .addConverterFactory(GsonConverterFactory.create(gson));
-
         return defaultRetrofitBuilder
                 .client(okHttpClient);
     }
@@ -74,17 +67,13 @@ public class NetModule {
     @Provides
     @Singleton
     OkHttpClient provideOkHttp(){
-
         OkHttpClient.Builder defaultHttpClient =
                 new OkHttpClient.Builder()
                         .readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                         .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS);
-
         defaultHttpClient.addInterceptor(new HttpLoggingInterceptor()
                 .setLevel(HttpLoggingInterceptor.Level.BODY));
-
         defaultHttpClient.addInterceptor(new RequestHeadersInterceptor());
-
         return defaultHttpClient.build();
     }
 

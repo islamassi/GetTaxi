@@ -14,18 +14,12 @@ import okhttp3.Response;
 
 public class RequestHeadersInterceptor implements Interceptor {
 
-
     @Override
     public Response intercept(Chain chain) throws IOException {
-
         Request request = chain.request();
-
         Request.Builder requestBuilder = requestBuilder = request.newBuilder()
                 .addHeader("Content-Type", "application/json");
-
         request = requestBuilder.build();
-
         return chain.proceed(request);
     }
-
 }

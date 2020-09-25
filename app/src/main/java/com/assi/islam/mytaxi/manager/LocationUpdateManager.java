@@ -41,28 +41,19 @@ import static com.assi.islam.mytaxi.utility.ResourceUtil.bindString;
  */
 
 public class LocationUpdateManager extends Observable{
-
     private LocationRequest mLocationRequest;
-
     private LocationCallback locationCallback;
-
     private FusedLocationProviderClient mFusedLocationClient;
-
     private MainActivity activity;
-
     private static LocationUpdateManager instance;
 
     private LocationUpdateManager() {
-
         this.locationCallback = new LocationCallback(){
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 super.onLocationResult(locationResult);
-
                 if (locationResult!= null && locationResult.getLastLocation() != null){
-
                     setChanged();
-
                     notifyObservers(locationResult.getLastLocation());
                 }
             }
@@ -71,32 +62,24 @@ public class LocationUpdateManager extends Observable{
     }
 
     public static LocationUpdateManager getInstance(){
-
         if (instance == null){
-
             instance = new LocationUpdateManager();
         }
-
         return instance;
     }
 
     public void init(MainActivity activity){
-
         this.activity = activity;
-
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
 
     }
 
     public boolean isPermissionGranted(){
-
         return ActivityCompat.checkSelfPermission(activity,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
     public void requestLocationUpdate() {
-
         if (isPermissionGranted()) {
-
             // granted
             mFusedLocationClient.requestLocationUpdates(
                     mLocationRequest,
@@ -107,29 +90,22 @@ public class LocationUpdateManager extends Observable{
     }
 
     public void grantPermission(){
-
         if (!isPermissionGranted()) {
-
             ActivityCompat.requestPermissions(activity,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         Constants.PERMISSIONS_REQUEST_LOCATION);
             return;
         }
-
         requestLocationUpdate();
     }
 
 
     private void settingsRequestFailed(Exception e){
-
         if (e instanceof ResolvableApiException) {
             try {
-
                 ResolvableApiException resolvable = (ResolvableApiException) e;
-
                 resolvable.startResolutionForResult(activity,
                         Constants.LOCATION_SETTINGS_REQUEST_CODE);
-
             }catch (Exception ignored){}
         }
     }
@@ -138,28 +114,18 @@ public class LocationUpdateManager extends Observable{
      * check settings that is required for getting user location to be changed
      */
     private void requestSettingsChangeAndPermission() {
-
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(mLocationRequest);
-
         SettingsClient client = LocationServices.getSettingsClient(activity);
-
         Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
-
         task.addOnSuccessListener(locationSettingsResponse -> grantPermission()).addOnFailureListener(this::settingsRequestFailed);
-
     }
 
     private LocationRequest createLocationRequest() {
-
         LocationRequest mLocationRequest = new LocationRequest();
-
         mLocationRequest.setInterval(30000);
-
         mLocationRequest.setFastestInterval(30000);
-
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
         return mLocationRequest;
     }
 
@@ -167,14 +133,12 @@ public class LocationUpdateManager extends Observable{
      * getting user's last location
      */
     public void getLastLocation(AbstractCallback<Location> callback) {
-
         if (isPermissionGranted()){
             // granted
             mFusedLocationClient.getLastLocation()
                     .addOnSuccessListener(new OnSuccessListener<Location>() {
                         @Override
                         public void onSuccess(Location location) {
-
                             if (location!= null)
                                 callback.onResult(true, location);
                             else
@@ -184,7 +148,6 @@ public class LocationUpdateManager extends Observable{
                     .addOnFailureListener(e -> callback.onResult(false, null))
                     .addOnCanceledListener(() -> callback.onResult(false, null));
         }else{
-
             callback.onResult(false, null);
         }
     }
@@ -194,7 +157,6 @@ public class LocationUpdateManager extends Observable{
      * start listining to location updates service
      */
     public void startLocationService() {
-
         requestSettingsChangeAndPermission();
     }
 
@@ -203,9 +165,7 @@ public class LocationUpdateManager extends Observable{
      * Stop listening to location updates service
      */
     public void stopLocationService() {
-
         if (mFusedLocationClient != null){
-
             mFusedLocationClient.removeLocationUpdates(locationCallback);
         }
     }
@@ -216,19 +176,12 @@ public class LocationUpdateManager extends Observable{
     public void showEnableLocationSnackBar(){
 
         Snackbar snackbar = Snackbar.make(activity.findViewById(R.id.container), bindString(R.string.location_permission_denied), Snackbar.LENGTH_LONG);
-
         snackbar.setAction(bindString(R.string.settings), v -> {
-
             Intent intent = new Intent();
-
             intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-
             Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
-
             intent.setData(uri);
-
             activity.startActivity(intent);
-
         });
 
         snackbar.show();

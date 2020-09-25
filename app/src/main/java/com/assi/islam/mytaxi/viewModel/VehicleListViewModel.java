@@ -29,29 +29,22 @@ import io.reactivex.schedulers.Schedulers;
 public class VehicleListViewModel extends ViewModel {
 
     private static final String TAG = VehicleListViewModel.class.getSimpleName();
-
     private Disposable lastListDisposal;
-
     // LiveData containing calculated diffResults and the new list after being calculated
     private MutableLiveData<DiffResultModel<RideOption>> processedDiffResultLiveData = new MutableLiveData<>();
-
     private SortModel sortModel = new SortModel(SortModel.SortType.NO_SORT);
-
     private VehiclesRepository vehiclesRepository;
 
     @Inject
     public VehicleListViewModel(VehiclesRepository vehiclesRepository) {
-
         this.vehiclesRepository = vehiclesRepository;
     }
 
     public void sort( List<RideOption> newList, List<RideOption> oldList){
-
         sort(sortModel.getSortType(), newList, oldList);
     }
 
     public void sort(SortModel.SortType sortType , List<RideOption> list){
-
         sort(sortType, list, list);
     }
 
@@ -61,7 +54,6 @@ public class VehicleListViewModel extends ViewModel {
      * This is done in a computation thread
      */
     public void sort(SortModel.SortType sortType , List<RideOption> newList, List<RideOption> oldList){
-
         this.sortModel.setSortType(sortType);
 
         if (lastListDisposal != null)
@@ -82,7 +74,6 @@ public class VehicleListViewModel extends ViewModel {
                 }, throwable -> {
                     Log.e(TAG, "Error sorting");
                 });
-
     }
 
     public MutableLiveData<DiffResultModel<RideOption>> getProcessedDiffResultLiveData() {

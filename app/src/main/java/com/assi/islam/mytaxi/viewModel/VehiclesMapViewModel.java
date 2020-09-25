@@ -33,13 +33,9 @@ import io.reactivex.schedulers.Schedulers;
 public class VehiclesMapViewModel extends ViewModel {
 
     private static final String TAG = VehiclesMapViewModel.class.getSimpleName();
-
     private Disposable lastPolyPointsDisposal;
-
     private MutableLiveData<Directions> polyPointsLiveData = new MutableLiveData<>();
-
     private List<RideOption> rideOptionList = new ArrayList<>();
-
     private Polyline lastDrawnPolyline;
 
     @Inject
@@ -56,10 +52,8 @@ public class VehiclesMapViewModel extends ViewModel {
      * @param directions
      */
     public void getPolyPoints(Directions directions){
-
         if (lastPolyPointsDisposal != null && !lastPolyPointsDisposal.isDisposed())
             lastPolyPointsDisposal.dispose();
-
         lastPolyPointsDisposal = Single.just(directions)
                 .map(directionsResponse -> processPolyPoints(directions))
                 .subscribeOn(Schedulers.computation())
@@ -78,13 +72,9 @@ public class VehiclesMapViewModel extends ViewModel {
      */
     @WorkerThread
     private Directions processPolyPoints(Directions directions){
-
         List<Route> routes = directions.getRoutes();
-
         List<LatLng> path = new ArrayList();
-
         try {
-
             if (routes != null && routes.size()>0) {
                 Route route = routes.get(0);
 

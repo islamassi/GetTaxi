@@ -31,17 +31,13 @@ import static com.assi.islam.mytaxi.constants.Constants.HAMBURG_WEST;
  * view model for {@link com.assi.islam.mytaxi.ui.activity.MainActivity}
  */
 public class MainActivityViewModel extends ViewModel {
-
     private boolean isMapView = false;
 
     @Inject
-    public MainActivityViewModel() {
-    }
-
+    public MainActivityViewModel() { }
     public boolean isMapView() {
         return isMapView;
     }
-
     public void setMapView(boolean mapView) {
         isMapView = mapView;
     }
