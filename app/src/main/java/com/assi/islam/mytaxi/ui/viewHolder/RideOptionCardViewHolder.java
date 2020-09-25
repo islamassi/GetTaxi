@@ -9,6 +9,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.assi.islam.mytaxi.databinding.RideOptionViewHolderBinding;
 import com.assi.islam.mytaxi.interfaces.OnRecyclerItemClickListener;
+import com.assi.islam.mytaxi.manager.LocationUpdateManager;
 import com.assi.islam.mytaxi.utility.ResourceUtil;
 import com.assi.islam.mytaxi.viewModel.RideOptionHolderViewModel;
 import com.google.android.material.internal.ViewUtils;
@@ -38,7 +39,8 @@ public class RideOptionCardViewHolder extends RecyclerView.ViewHolder implements
     public void bind(RideOptionHolderViewModel viewModel){
         this.mViewModel = viewModel;
         mBinding.setViewModel(mViewModel);
-        mBinding.card.animateCard();
+        if (LocationUpdateManager.getInstance().isPermissionGranted())
+            mBinding.card.animateCard();
     }
 
     public Context getContext() {
