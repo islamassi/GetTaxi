@@ -18,7 +18,7 @@
 </p>
 
 
-#### **IMPORTANT**
+## **IMPORTANT**
 * **Please allow location permission so all features in the app will operate correctly**
 * The app was built in April 2019
 * The app should have been built in **Kotlin**. 
