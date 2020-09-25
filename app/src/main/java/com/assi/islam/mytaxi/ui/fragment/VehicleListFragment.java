@@ -42,34 +42,26 @@ import javax.inject.Inject;
  */
 public class VehicleListFragment extends Fragment implements
         OnRecyclerItemClickListener,
-        Observer<Resource<List<RideOption>, ApiError>>
-{
+        Observer<Resource<List<RideOption>, ApiError>> {
 
     private VehicleListViewModel mViewModel;
-
     private VehiclesSharedViewModel mSharedViewModel;
-
     private VehicleListFragmentBinding mBinding;
-
     @Inject
     VehicleListAdapter mAdapter;
-
     @Inject
     ViewModelFactory mViewModelFactory;
+    private Toast errorToast;
 
     public static VehicleListFragment newInstance() {
         return new VehicleListFragment();
     }
 
-    private Toast errorToast;
-
     /**
      * notified when diffResults for a new list is calculated and sorted (if sorting enabled).
      */
     private  Observer<DiffResultModel<RideOption>> processedDiffResultObserver = diffResultModel -> {
-
         mAdapter.notifyWithDiff(diffResultModel);
-
     };
 
     @Nullable
@@ -77,26 +69,18 @@ public class VehicleListFragment extends Fragment implements
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater,R.layout.vehicle_list_fragment, container, false);
-
         DaggerAppComponent.create().inject(this);
-
         errorToast = Toast.makeText(getActivity(), R.string.server_error , Toast.LENGTH_LONG);
-
         mBinding.setLifecycleOwner(this);
-
         mAdapter.setClickListener(this);
-
         mBinding.vehiclesRecyclerView.setAdapter(mAdapter);
-
         initSortLayout();
-
         return mBinding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         // fragment scope
         mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(VehicleListViewModel.class);
 
@@ -107,32 +91,22 @@ public class VehicleListFragment extends Fragment implements
             mSharedViewModel.requestHamburgRideOptions();
 
         mBinding.setViewModel(mViewModel);
-
-        mSharedViewModel.getRideOptionListResourceLiveData().observe(this, this);
-
-        mViewModel.getProcessedDiffResultLiveData().observe(this, processedDiffResultObserver);
-
+        mSharedViewModel.getRideOptionListResourceLiveData().observe(getViewLifecycleOwner(), this);
+        mViewModel.getProcessedDiffResultLiveData().observe(getViewLifecycleOwner(), processedDiffResultObserver);
         mBinding.swipeToRefresh.setOnRefreshListener(mSharedViewModel::requestHamburgRideOptions);
-
         mBinding.swipeToRefresh.setRefreshing(true);
     }
 
     private void initSortLayout() {
-
         mBinding.durationSortLayout.setOnClickListener(v -> {
-
             switchToggles(mBinding.durationSortIcon, mBinding.distanceSortIcon);
-
             if (mBinding.durationSortIcon.isIconEnabled())
                 mViewModel.sort( SortModel.SortType.DURATION ,mAdapter.getRideOptionList());
             else
                 mViewModel.getSortModel().setSortType(SortModel.SortType.NO_SORT);
         });
-
         mBinding.distanceSortLayout.setOnClickListener(v -> {
-
             switchToggles(mBinding.distanceSortIcon, mBinding.durationSortIcon);
-
             if (mBinding.distanceSortIcon.isIconEnabled())
                 mViewModel.sort( SortModel.SortType.DISTANCE ,mAdapter.getRideOptionList(), mAdapter.getRideOptionList());
             else
@@ -141,20 +115,14 @@ public class VehicleListFragment extends Fragment implements
     }
 
     private void switchToggles(SwitchIconView selectedToggle, SwitchIconView otherToggle){
-
         selectedToggle.switchState(true);
-
         otherToggle.setIconEnabled(false, true);
-
     }
 
     @Override
     public void recyclerItemClicked(View view, int position) {
-
         mSharedViewModel.getSelectedRideOptionLiveData().setValue(mAdapter.getRideOptionList().get(position));
-
         ((MainActivity)getActivity()).showVehiclesMapFragment();
-
     }
 
     /**
@@ -164,28 +132,17 @@ public class VehicleListFragment extends Fragment implements
      */
     @Override
     public void onChanged(Resource<List<RideOption>, ApiError> resource) {
-
         // resource finished loading successfully or still loading
         if (resource.status == Resource.Status.SUCCESS || resource.status == Resource.Status.LOADING){
-
             mViewModel.sort( resource.data, mAdapter.getRideOptionList());
-
             if (resource.status == Resource.Status.SUCCESS) {
-
                 mBinding.swipeToRefresh.setRefreshing(false);
-
             }else{
-
                 mBinding.swipeToRefresh.setRefreshing(true);
-
             }
-
         }else if(resource.status == Resource.Status.ERROR){
-
             mBinding.swipeToRefresh.setRefreshing(false);
-
             errorToast.show();
-
         }
     }
 }

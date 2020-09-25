@@ -36,13 +36,9 @@ import static com.assi.islam.mytaxi.constants.Constants.HAMBURG_WEST;
 public class VehiclesSharedViewModel extends ViewModel {
 
     private MutableLiveData<RideOption> selectedRideOptionLiveData = new MutableLiveData<>();
-
     private VehiclesRepository vehiclesRepository;
-
     private MutableLiveData<Resource<List<RideOption>, ApiError>> rideOptionListResourceLiveData = new MutableLiveData<>();
-
     private LatLngBounds hamburgBounds = new LatLngBounds(new LatLng(HAMBURG_SOUTH, HAMBURG_WEST), new LatLng(HAMBURG_NORTH, HAMBURG_EAST));
-
     private static final String TAG = MainActivityViewModel.class.getSimpleName();
 
     @Inject
@@ -55,33 +51,25 @@ public class VehiclesSharedViewModel extends ViewModel {
      * @param bounds
      */
     public void requestRideOptionsList(LatLngBounds bounds){
-
         LocationUpdateManager.getInstance().getLastLocation((isSuccess, result) -> {
-
             if (isSuccess) {
                 // successfully get user location
-
                 vehiclesRepository.loadRideOptions(bounds, new Coordinate(result.getLatitude(), result.getLongitude()), rideOptionListResourceLiveData);
-
             }else{
                 // register observer that listen to location updates for one time and remove it self
                 LocationUpdateManager.getInstance().addObserver(new Observer() {
                     @Override
                     public void update(Observable o, Object arg) {
-
                         vehiclesRepository.loadRideOptions(bounds, new Coordinate(((Location)arg).getLatitude(), ((Location)arg).getLongitude()), rideOptionListResourceLiveData);
-
                         LocationUpdateManager.getInstance().deleteObserver(this);
                     }
                 });
-
                 vehiclesRepository.loadRideOptions(bounds, null, rideOptionListResourceLiveData);
             }
         });
     }
 
     public void requestHamburgRideOptions(){
-
         requestRideOptionsList(hamburgBounds);
     }
 

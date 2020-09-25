@@ -24,7 +24,6 @@ public class GeoApiModule {
     @Provides
     @Singleton
     GeoApiContext getGeoApiContext(){
-
         return new GeoApiContext.Builder()
                 .queryRateLimit(3)
                 .apiKey(ResourceUtil.bindString(R.string.google_maps_key))

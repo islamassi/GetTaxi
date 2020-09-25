@@ -22,8 +22,7 @@ public class RideOptionHolderViewModel extends ViewModel {
     private RideOptionCardViewModel cardViewModel;
 
     @Inject
-    public RideOptionHolderViewModel() {
-    }
+    public RideOptionHolderViewModel() { }
 
     public RideOptionCardViewModel getCardViewModel() {
         return cardViewModel;

@@ -15,11 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 public class RideOptionCardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private RideOptionViewHolderBinding mBinding;
-
     private Context mContext;
-
     private RideOptionHolderViewModel mViewModel;
-
     private OnRecyclerItemClickListener clickListener;
 
     public RideOptionCardViewHolder(RideOptionViewHolderBinding mBinding, Context mContext, OnRecyclerItemClickListener clickListener) {
@@ -27,19 +24,13 @@ public class RideOptionCardViewHolder extends RecyclerView.ViewHolder implements
         this.mBinding = mBinding;
         this.mContext = mContext;
         this.clickListener = clickListener;
-
         mBinding.getRoot().setOnClickListener(this);
     }
 
     public void bind(RideOptionHolderViewModel viewModel){
-
         this.mViewModel = viewModel;
-
         mBinding.setViewModel(mViewModel);
-
-
         mBinding.setViewModel(mViewModel);
-
     }
 
     public Context getContext() {
@@ -48,7 +39,6 @@ public class RideOptionCardViewHolder extends RecyclerView.ViewHolder implements
 
     @Override
     public void onClick(View v) {
-
         clickListener.recyclerItemClicked(v, this.getLayoutPosition());
     }
 }

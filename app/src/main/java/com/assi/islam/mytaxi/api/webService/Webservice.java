@@ -11,7 +11,6 @@ import retrofit2.http.Query;
  * Created by islam assi
  */
 public interface Webservice {
-
     /**
      * web service for getting vehicles in a latLng bounds.
      */

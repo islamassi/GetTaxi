@@ -30,9 +30,7 @@ import androidx.cardview.widget.CardView;
 public class RideOptionCardView extends FrameLayout {
 
     private Context mContext;
-
     private RideOptionCardLayoutBinding mBinding;
-
     private RideOptionCardViewModel mViewModel;
 
     public RideOptionCardView(Context context) {
@@ -53,16 +51,12 @@ public class RideOptionCardView extends FrameLayout {
     public RideOptionCardView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs, defStyleRes);
-
     }
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
-
         mContext =context;
-
         LayoutInflater inflater = (LayoutInflater)
                 mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
         mBinding = RideOptionCardLayoutBinding.inflate(inflater, this, true);
     }
 
@@ -75,11 +69,8 @@ public class RideOptionCardView extends FrameLayout {
     }
 
     public void setViewModel(RideOptionCardViewModel mViewModel) {
-
         this.mViewModel = mViewModel;
-
         mBinding.headingImage.setRotation((float) mViewModel.getRideOption().getVehicle().getHeading() *-1);
-
         mBinding.setViewModel(mViewModel);
     }
 }

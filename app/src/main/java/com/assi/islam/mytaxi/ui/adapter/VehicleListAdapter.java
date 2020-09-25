@@ -48,24 +48,18 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RideOptionCardViewH
     @NonNull
     @Override
     public RideOptionCardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         RideOptionViewHolderBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.ride_option_view_holder,
                 parent,
                 false);
-
         return new RideOptionCardViewHolder(binding, parent.getContext(), clickListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RideOptionCardViewHolder holder, int position) {
-
         RideOptionHolderViewModel viewModel = ViewModelProviders.of((FragmentActivity) holder.getContext(), mViewModelFactory).get(RideOptionHolderViewModel.class);
-
         viewModel.setCardViewModel(new RideOptionCardViewModel(rideOptionList.get(position)));
-
         holder.bind(viewModel);
-
     }
 
     @Override
@@ -86,11 +80,8 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RideOptionCardViewH
      * @param diffResultModel Calculated diff results
      */
     public void notifyWithDiff(DiffResultModel<RideOption> diffResultModel){
-
         this.rideOptionList.clear();
-
         this.rideOptionList.addAll(diffResultModel.getNewList());
-
         diffResultModel.getDiffResult().dispatchUpdatesTo(VehicleListAdapter.this);
     }
 }
