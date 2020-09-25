@@ -13,6 +13,11 @@
   * [Screenshots](#screenshots)
     
 <p align="center">
+   <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/car_move.gif?raw=true" width="350" >
+   <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/path.gif?raw=true" width="350" >
+ </p>
+ 
+<p align="center">
   <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/8.jpg?raw=true" width="350" >
   <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/9.jpg?raw=true" width="350" >
 </p>
@@ -21,7 +26,7 @@
 ## **IMPORTANT**
 * **Please allow location permission so all features in the app will operate correctly**
 * The app was built in April 2019
-* The app should have been built in **Kotlin**. 
+* If I will rebuild the app, I will build it in **Kotlin**.
 * If you would like to check a Kotlin project, please navigate to <a href="https://github.com/islamassi/IA_NewsApp">**IA_News**</a>
 
 ### APK 
