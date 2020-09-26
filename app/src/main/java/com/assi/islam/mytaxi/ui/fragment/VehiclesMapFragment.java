@@ -5,8 +5,10 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.annotation.SuppressLint;
 import android.location.Location;
 import android.os.Bundle;
 
@@ -89,8 +91,8 @@ public class VehiclesMapFragment extends Fragment implements
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         initViewModel();
         FragmentManager fm = getChildFragmentManager();
         SupportMapFragment mapFragment = (SupportMapFragment) fm.findFragmentByTag("mapFragment");
@@ -106,9 +108,9 @@ public class VehiclesMapFragment extends Fragment implements
 
     private void initViewModel(){
         // fragment scope
-        mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(VehiclesMapViewModel.class);
+        mViewModel = new ViewModelProvider(this, mViewModelFactory).get(VehiclesMapViewModel.class);
         // activity scope
-        mSharedViewModel = ViewModelProviders.of(getActivity(), mViewModelFactory).get(VehiclesSharedViewModel.class);
+        mSharedViewModel = new ViewModelProvider(requireActivity(), mViewModelFactory).get(VehiclesSharedViewModel.class);
     }
 
     @Override
@@ -122,6 +124,8 @@ public class VehiclesMapFragment extends Fragment implements
         initWithRideOption();
     }
 
+
+    @SuppressLint("MissingPermission")
     private void initMap() {
         if (LocationUpdateManager.getInstance().isPermissionGranted()) {
             mMap.setMyLocationEnabled(true);

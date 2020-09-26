@@ -24,7 +24,7 @@
 ## **IMPORTANT**
 * **Please allow location permission so all features in the app will operate correctly**
 * The app was built in April 2019
-* If I will rebuild the app, I will build it in **Kotlin**.
+* If I will have the chance to rebuild the app, I will build it in **Kotlin**.
 * If you would like to check a Kotlin project, please navigate to <a href="https://github.com/islamassi/IA_NewsApp">**IA_News**</a>
 
 ### APK 

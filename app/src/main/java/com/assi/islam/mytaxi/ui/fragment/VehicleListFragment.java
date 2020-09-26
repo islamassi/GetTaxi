@@ -2,6 +2,7 @@ package com.assi.islam.mytaxi.ui.fragment;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -79,13 +80,13 @@ public class VehicleListFragment extends Fragment implements
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         // fragment scope
-        mViewModel = ViewModelProviders.of(this, mViewModelFactory).get(VehicleListViewModel.class);
+        mViewModel = new ViewModelProvider(this, mViewModelFactory).get(VehicleListViewModel.class);
 
         // activity scope
-        mSharedViewModel = ViewModelProviders.of(getActivity(), mViewModelFactory).get(VehiclesSharedViewModel.class);
+        mSharedViewModel = new ViewModelProvider(requireActivity(), mViewModelFactory).get(VehiclesSharedViewModel.class);
 
         if (mViewModel.getProcessedDiffResultLiveData().getValue() == null)
             mSharedViewModel.requestHamburgRideOptions();
