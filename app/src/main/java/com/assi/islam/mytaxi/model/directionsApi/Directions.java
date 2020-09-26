@@ -50,4 +50,8 @@ public class Directions implements Serializable {
 
         return null;
     }
+
+    public boolean isEmpty(){
+        return status.equals("ZERO_RESULTS");
+    }
 }

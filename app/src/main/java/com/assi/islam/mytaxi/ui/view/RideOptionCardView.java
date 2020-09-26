@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 
 import com.assi.islam.mytaxi.R;
 import com.assi.islam.mytaxi.databinding.RideOptionCardLayoutBinding;
+import com.assi.islam.mytaxi.manager.LocationUpdateManager;
 import com.assi.islam.mytaxi.model.RideOption;
 import com.assi.islam.mytaxi.viewModel.RideOptionCardViewModel;
 
@@ -77,8 +78,13 @@ public class RideOptionCardView extends FrameLayout {
 
     public void setViewModel(RideOptionCardViewModel mViewModel) {
         this.mViewModel = mViewModel;
-        mBinding.headingImage.setRotation((float) mViewModel.getRideOption().getVehicle().getHeading() *-1);
         mBinding.setViewModel(mViewModel);
+        mBinding.headingImage.setRotation(0);
+        mBinding.headingImage.animate().rotation(((float) mViewModel.getRideOption().getVehicle().getHeading() *-1)).start();
+        if (mViewModel.getRideOption().getDirections() != null && !mViewModel.getRideOption().getDirections().isEmpty())
+            animateCard();
+        else
+            animateCarX();
     }
 
     public void animateCard() {
@@ -108,6 +114,7 @@ public class RideOptionCardView extends FrameLayout {
 
     public void animateCarX(){
         float itemXAnim = dpToPx(mContext, 20);
+        mBinding.coverImage.setTranslationY(dpToPx(mContext, 5));
         ObjectAnimator
                 .ofFloat(mBinding.coverImage, "translationX",  itemXAnim)
                 .setDuration(animDuration*2).start();
