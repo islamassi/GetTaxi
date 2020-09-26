@@ -81,12 +81,13 @@ public class RideOption {
     }
 
     public boolean deepEquals(Object o) {
-        if (this == o) return true;
+        /*if (this == o) return true;
         if (!(o instanceof RideOption)) return false;
         RideOption that = (RideOption) o;
         return Objects.equals(vehicle, that.vehicle) &&
                 Objects.equals(riderCoordinate, that.riderCoordinate) &&
-                Objects.equals(directions, that.directions);
+                Objects.equals(directions, that.directions);*/
+        return this == o;
     }
 
     @Override

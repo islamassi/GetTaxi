@@ -18,6 +18,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import androidx.lifecycle.MutableLiveData;
+
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -39,11 +41,8 @@ import io.reactivex.schedulers.Schedulers;
 public class VehiclesRepository {
 
     private final Webservice webservice;
-
     private final DirectionsApiRepository directionsApiRepository;
-
     private Disposable lastRideOptionMapperDisposal;
-
     private Disposable lastRideOptionDetailsDisposal;
 
     @Inject
@@ -54,18 +53,23 @@ public class VehiclesRepository {
 
     /**
      * load {@link Vehicle} list in a latLng bounds
-     * @param bounds
-     * @param vehiclesCallback
      */
-    public void loadVehicles(LatLngBounds bounds, ApiResponse<VehiclesListResponse, ApiError> vehiclesCallback){
-
-        ApiResponse<VehiclesListResponse, ApiError>  observer = webservice
-                .geyVehicles(
-                        bounds.northeast.latitude, bounds.northeast.longitude,
-                        bounds.southwest.latitude, bounds.southwest.longitude
-                ).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(vehiclesCallback);
+    public void loadVehicles(LatLngBounds bounds, Coordinate riderCoordinate, Consumer<RideOption> onSuccess, Consumer<Throwable> onError, Action onComplete){
+        lastRideOptionDetailsDisposal = webservice.geyVehicles(
+                bounds.northeast.latitude, bounds.northeast.longitude,
+                bounds.southwest.latitude, bounds.southwest.longitude)
+                .subscribeOn(Schedulers.io())
+                .flatMap(vehiclesResp -> {
+                    if (vehiclesResp!= null && vehiclesResp.isSuccessful() && vehiclesResp.body()!= null)
+                        return Observable.fromIterable(vehiclesResp.body().getVehicles());
+                    return null;
+                }).flatMap(vehicle -> {
+                    if (riderCoordinate != null)
+                        return requestRideOptionDetails(vehicle, riderCoordinate);
+                    else
+                        return Observable.just(new RideOption(vehicle));
+                }).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(onSuccess, onError, onComplete);
     }
 
     /**
@@ -75,7 +79,6 @@ public class VehiclesRepository {
      * @return
      */
     public ObservableSource<RideOption> requestRideOptionDetails(Vehicle vehicle, Coordinate riderCoordinates){
-
         return Observable.zip(
                 Observable.just(vehicle),
                 directionsApiRepository.getDirections(vehicle.getCoordinate().toLatLng(), riderCoordinates.toLatLng()),
@@ -93,7 +96,6 @@ public class VehiclesRepository {
         IdlingResourceManager.getInstance().getServicesIdlingResource().increment();
         dispose(lastRideOptionMapperDisposal, lastRideOptionDetailsDisposal);
         List<RideOption> rideOptionList = new ArrayList<>();
-
         Consumer<RideOption> prepareRideOptinOnSuccess = new Consumer<RideOption>() {
             boolean isNewRequest = true;
             @Override
@@ -103,71 +105,14 @@ public class VehiclesRepository {
                 isNewRequest = false;
             }
         };
-
         Consumer<Throwable> prepareRideOptinOnError = throwable -> {
             throwable.toString();
         };
-
         Action rideOptionListComplete = () -> {
             rideOptionsResourceLiveData.setValue(Resource.success(rideOptionList));
             IdlingResourceManager.getInstance().getServicesIdlingResource().decrement();
         };
-
-        ApiResponse<VehiclesListResponse, ApiError> vehiclesCallback = new ApiResponse<VehiclesListResponse, ApiError>() {
-            @Override
-            protected void onSuccess(VehiclesListResponse vehiclesListResponse) {
-                if (riderCoordinates != null) {
-                    requestDetailedRideOptionList(
-                            vehiclesListResponse.getVehicles(),
-                            riderCoordinates,
-                            prepareRideOptinOnSuccess,
-                            prepareRideOptinOnError,
-                            rideOptionListComplete
-                    );
-
-                }else{
-                    mapVehicleListToRideOptionList(
-                            vehiclesListResponse.getVehicles(),
-                            prepareRideOptinOnSuccess,
-                            prepareRideOptinOnError,
-                            rideOptionListComplete
-                    );
-                }
-            }
-            @Override
-            protected <D extends ApiError> void onFailure(D error) {
-                super.onFailure(error);
-                rideOptionsResourceLiveData.setValue(Resource.error(error));
-            }
-        };
-        loadVehicles(bounds, vehiclesCallback);
-    }
-
-    /**
-     * maps {@link Vehicle} list to {@link RideOption} list
-     *
-     * Done in a worker thread
-     */
-    private void mapVehicleListToRideOptionList(List<Vehicle> vehicleList, Consumer<RideOption> onSuccess, Consumer<Throwable> onError, Action onComplete){
-         lastRideOptionMapperDisposal = Observable.fromIterable(vehicleList)
-                .map(RideOption::new)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(onSuccess, onError, onComplete);
-    }
-
-    /**
-     * request more details from directions service for every vehicle
-     * Then, maps {@link Vehicle} list to {@link RideOption} list
-     *
-     * This s done in a worker thread
-     */
-    private void requestDetailedRideOptionList(List<Vehicle> vehicleList, Coordinate riderCoordinate,  Consumer<RideOption> onSuccess, Consumer<Throwable> onError, Action onComplete){
-         lastRideOptionDetailsDisposal = Observable.fromIterable(vehicleList)
-                .flatMap((Function<Vehicle, ObservableSource<RideOption>>) vehicle -> requestRideOptionDetails(vehicle, riderCoordinate))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(onSuccess, onError, onComplete);
+        loadVehicles(bounds, riderCoordinates, prepareRideOptinOnSuccess, prepareRideOptinOnError, rideOptionListComplete);
     }
 
     /**

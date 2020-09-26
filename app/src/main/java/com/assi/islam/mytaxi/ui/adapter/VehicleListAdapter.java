@@ -33,10 +33,8 @@ import androidx.recyclerview.widget.RecyclerView;
 public class VehicleListAdapter extends RecyclerView.Adapter<RideOptionCardViewHolder> {
 
     private List<RideOption> rideOptionList = new ArrayList<>();
-
     // used to create view models for view holders
     private ViewModelFactory mViewModelFactory;
-
     // listener callback
     private OnRecyclerItemClickListener clickListener;
 
@@ -57,8 +55,7 @@ public class VehicleListAdapter extends RecyclerView.Adapter<RideOptionCardViewH
 
     @Override
     public void onBindViewHolder(@NonNull RideOptionCardViewHolder holder, int position) {
-        RideOptionHolderViewModel viewModel = ViewModelProviders.of((FragmentActivity) holder.getContext(), mViewModelFactory).get(RideOptionHolderViewModel.class);
-        viewModel.setCardViewModel(new RideOptionCardViewModel(rideOptionList.get(position)));
+        RideOptionHolderViewModel viewModel = new RideOptionHolderViewModel(new RideOptionCardViewModel(rideOptionList.get(position)));
         holder.bind(viewModel);
     }
 

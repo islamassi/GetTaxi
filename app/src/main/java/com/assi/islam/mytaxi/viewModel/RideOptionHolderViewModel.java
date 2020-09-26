@@ -17,12 +17,13 @@ import io.reactivex.schedulers.Schedulers;
  *
  * view model for {@link com.assi.islam.mytaxi.ui.viewHolder.RideOptionCardViewHolder}
  */
-public class RideOptionHolderViewModel extends ViewModel {
+public class RideOptionHolderViewModel {
 
     private RideOptionCardViewModel cardViewModel;
 
-    @Inject
-    public RideOptionHolderViewModel() { }
+    public RideOptionHolderViewModel(RideOptionCardViewModel cardViewModel) {
+        this.cardViewModel = cardViewModel;
+    }
 
     public RideOptionCardViewModel getCardViewModel() {
         return cardViewModel;
