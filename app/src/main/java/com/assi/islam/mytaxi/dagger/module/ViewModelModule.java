@@ -36,11 +36,6 @@ public abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(RideOptionHolderViewModel.class)
-    abstract ViewModel rideOptionCardViewModel(RideOptionHolderViewModel rideOptionHolderViewModel);
-
-    @Binds
-    @IntoMap
     @ViewModelKey(MainActivityViewModel.class)
     abstract ViewModel mainActivityViewModel(MainActivityViewModel mainActivityViewModel);
 
