@@ -14,13 +14,11 @@
     
 <p align="center">
    <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/car_move.gif?raw=true" width="350" >
+ </p>
+<p align="center">
+   <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/parallel.gif?raw=true" width="350" >
    <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/path.gif?raw=true" width="350" >
  </p>
- 
-<p align="center">
-  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/8.jpg?raw=true" width="350" >
-  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/9.jpg?raw=true" width="350" >
-</p>
 
 
 ## **IMPORTANT**
@@ -47,6 +45,7 @@
 * I get the list of vehicles by a GET call to:
 https://fake-poi-api.mytaxi.com/?p1Lat={Latitude1}&p1Lon={Longitude1}&p2Lat={Latitude2}&p2Lon={Longit ude2}
 * For each vehicle, I initiate a call to Google Directions API to get information regarding the time, distance, path needed for this vehicle to arrive to the user. 
+* Requests to Google Directions API are being done in **parallel**.
 * When the user selects a vehicle, the map view will open showing all vehicles, the selected vehicle card, and draw a path between the selected vehicle and the user location. The map view will modify the zoom to show the path between the user and the selected vehicle.
 * When user is in the **VehiclesMapFragment**, moving the map camera will result in a new API call within the map's camera boundaries. The **VehicleListFragment** will be updated by this call to show the new requested vehicles.
 * Clicking on a vehicle in **VehiclesMapFragment** will show the vehicle card and the path between it and the user.
@@ -86,12 +85,9 @@ To run the app successfully, you need to add Google Maps API key to the strings.
 ## Screenshots
 
 <p align="center">
-  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/8.jpg?raw=true" width="350" >
   <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/9.jpg?raw=true" width="350" >
   <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/5.jpg?raw=true" width="350" >
-  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/6.jpg?raw=true" width="350" >
   <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/7.jpg?raw=true" width="350" >
-  <img src="https://github.com/islamassi/GetTaxi/blob/master/screenshots/8.jpg?raw=true" width="350" >
 </p>
 
 ### Feedback
