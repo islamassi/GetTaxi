@@ -59,8 +59,7 @@ public class VehicleListViewModel extends ViewModel {
         if (lastListDisposal != null)
             lastListDisposal.dispose();
 
-        lastListDisposal = Observable.just(newList)
-                .flatMap(Observable::fromIterable)
+        lastListDisposal = Observable.fromIterable(newList)
                 .toSortedList(new RideOptionComparator(sortModel))
                 .map(rideOptionList -> new DiffResultModel<>(
                         rideOptionList,

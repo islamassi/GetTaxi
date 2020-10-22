@@ -58,17 +58,18 @@ public class VehiclesRepository {
         lastRideOptionDetailsDisposal = webservice.geyVehicles(
                 bounds.northeast.latitude, bounds.northeast.longitude,
                 bounds.southwest.latitude, bounds.southwest.longitude)
-                .subscribeOn(Schedulers.io())
-                .flatMap(vehiclesResp -> {
+                .flatMapIterable(vehiclesResp -> {
                     if (vehiclesResp!= null && vehiclesResp.isSuccessful() && vehiclesResp.body()!= null)
-                        return Observable.fromIterable(vehiclesResp.body().getVehicles());
+                        return vehiclesResp.body().getVehicles();
                     return null;
                 }).flatMap(vehicle -> {
                     if (riderCoordinate != null)
                         return requestRideOptionDetails(vehicle, riderCoordinate);
                     else
                         return Observable.just(new RideOption(vehicle));
-                }).observeOn(AndroidSchedulers.mainThread())
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(onSuccess, onError, onComplete);
     }
 
@@ -81,8 +82,12 @@ public class VehiclesRepository {
     public ObservableSource<RideOption> requestRideOptionDetails(Vehicle vehicle, Coordinate riderCoordinates){
         return Observable.zip(
                 Observable.just(vehicle),
-                directionsApiRepository.getDirections(vehicle.getCoordinate().toLatLng(), riderCoordinates.toLatLng()),
-                (vehicle1, directionsResponse) -> new RideOption(vehicle1, riderCoordinates, directionsResponse.body()));
+                directionsApiRepository
+                        .getDirections(vehicle.getCoordinate().toLatLng(), riderCoordinates.toLatLng())
+                        .subscribeOn(Schedulers.io()),
+                (vehicle1, directionsResponse) ->
+                        new RideOption(vehicle1, riderCoordinates, directionsResponse.body()))
+                .subscribeOn(Schedulers.io());
     }
 
     /**
